@@ -160,7 +160,10 @@
     <span class="reveal-toggle" id="toggle">关闭揭秘</span>
   </div>
 
-  <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
+ <div class="statusbar">
+  <span id="sys-clock">00:00</span>
+  <span>📶 🔋</span>
+</div>
 
   <!-- 列表页 -->
   <div class="page active" id="listPage">
@@ -238,6 +241,23 @@
 
 <script>
   const phone = document.getElementById('phone');
+// ====================
+// 实时时间同步逻辑
+// ====================
+function updateClock() {
+  const now = new Date();
+  // 提取小时和分钟，如果小于10则在前面补0
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  
+  // 更新到页面上
+  document.getElementById('sys-clock').textContent = `${hours}:${minutes}`;
+}
+
+// 页面加载时立即执行一次，避免显示 00:00
+updateClock();
+// 设置定时器，每 1000 毫秒（1秒）更新一次时间
+setInterval(updateClock, 1000);
   const toggle = document.getElementById('toggle');
 
   function go(id){
