@@ -92,22 +92,8 @@
   .perk { display: flex; gap: 10px; margin-bottom: 14px; }
   .perk .ic { font-size: 18px; }
   .perk b { font-size: 14px; }
-/* 隐藏的揭秘小标题样式 */
-  .perk span.perk-hint { 
-    display: none; /* 默认状态下隐藏 */
-    font-size: 12px; 
-    color: #d32029; /* 使用反诈警示红，与原网页普通说明作区分 */
-    margin-top: 4px;
-    line-height: 1.4;
-  }
-  .perk span.perk-hint::before {
-    content: "💡 揭秘："; /* 增加一个小前缀强化揭秘感 */
-    font-weight: 600;
-  }
-  /* 当父级触发 reveal 揭秘模式时，展示这些文字 */
-  .reveal .perk-hint { 
-    display: block; 
-  }
+  .perk span { font-size: 12px; color: #777; display: block; margin-top: 2px; }
+
   .pay-box {
     margin: 6px 16px 16px; border: 1px solid #ffe0b2;
     background: #fff8f0; border-radius: 14px; padding: 16px; position: relative;
@@ -145,6 +131,10 @@
   }
   .reveal .annot { display: block; }
   .reveal .danger-outline { outline: 3px dashed #d32029; outline-offset: 2px; border-radius: 8px; }
+
+  /* 仅揭秘模式可见的解说文字 */
+  .reveal-only { display: none !important; }
+  .reveal .reveal-only { display: block !important; }
 
   /* 弹窗 */
   .modal {
@@ -210,19 +200,10 @@
       <h2>免排队 + 免费住宿一键升级<br>市中心豪华酒店</h2>
       <p>仅限今日中转旅客 · 名额即将抢光</p>
     </div>
-<div class="detail-body">
-      <div class="perk">
-        <span class="ic">🛏️</span>
-        <div><b>免费住宿升级豪华酒店</b><span class="perk-hint">小投入换大回报，是最常见的诱饵</span></div>
-      </div>
-      <div class="perk">
-        <span class="ic">⚡</span>
-        <div><b>安检/值机免排队</b><span class="perk-hint">用"特权"降低你的戒心</span></div>
-      </div>
-      <div class="perk">
-        <span class="ic">💸</span>
-        <div><b>明早押金100%原路退还</b><span class="perk-hint">"会退还"让你觉得没风险，实际钱进去就没了</span></div>
-      </div>
+    <div class="detail-body">
+      <div class="perk"><span class="ic">🛏️</span><div><b>免费住宿升级豪华酒店</b><span class="reveal-only">小投入换大回报，是最常见的诱饵</span></div></div>
+      <div class="perk"><span class="ic">⚡</span><div><b>安检/值机免排队</b><span class="reveal-only">用"特权"降低你的戒心</span></div></div>
+      <div class="perk"><span class="ic">💸</span><div><b>明早押金100%原路退还</b><span class="reveal-only">"会退还"让你觉得没风险，实际钱进去就没了</span></div></div>
     </div>
 
     <div class="pay-box danger-outline">
@@ -240,7 +221,7 @@
       <div class="urgent" id="urgent">⏰ 名额倒计时 09:58，逾期作废</div>
     </div>
 
-    <div class="footnote">遇到这种页面，正确操作是：关掉它，一分钱不付，一个字不填。</div>
+    <div class="footnote reveal-only">遇到这种页面，正确操作是：关掉它，一分钱不付，一个字不填。</div>
   </div>
 
   <!-- 反诈弹窗 -->
@@ -272,7 +253,7 @@ function updateClock() {
   // 提取小时和分钟，如果小于10则在前面补0
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
-  
+
   // 更新到页面上
   document.getElementById('sys-clock').textContent = `${hours}:${minutes}`;
 }
