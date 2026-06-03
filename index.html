@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="反诈演示">
+
+<title>反诈科普 · 机场福利攻略骗局拆解</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #2c2c34;
+    display: flex; justify-content: center;
+    padding: 16px 0; color: #333;
+  }
+  .phone {
+    width: 375px; min-height: 760px;
+    background: #fff; border-radius: 28px;
+    overflow: hidden; position: relative;
+    box-shadow: 0 12px 40px rgba(0,0,0,.4);
+  }
+
+  /* 顶部反诈横幅 */
+  .edu-bar {
+    background: #d32029; color: #fff;
+    font-size: 12px; text-align: center;
+    padding: 7px 10px; letter-spacing: .5px;
+    position: relative; z-index: 50;
+  }
+  .reveal-toggle {
+    position: absolute; right: 8px; top: 5px;
+    background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.6);
+    color: #fff; font-size: 11px; padding: 3px 8px;
+    border-radius: 12px; cursor: pointer;
+  }
+
+  /* 状态栏 */
+  .statusbar {
+    display: flex; justify-content: space-between;
+    padding: 8px 18px 4px; font-size: 13px; font-weight: 600; color: #222;
+  }
+
+  /* 通用头部 */
+  .topnav {
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 14px; border-bottom: 1px solid #f0f0f0;
+  }
+  .back { font-size: 22px; color: #333; cursor: pointer; }
+  .topnav .title { font-size: 15px; font-weight: 600; flex: 1; }
+
+  /* ---------- 列表页 ---------- */
+  .feed { padding: 10px; }
+  .card {
+    border-radius: 12px; overflow: hidden; background: #fafafa;
+    box-shadow: 0 1px 6px rgba(0,0,0,.06); cursor: pointer;
+    position: relative;
+  }
+  .cover {
+    height: 220px;
+    background: linear-gradient(135deg,#ff9a9e,#fecfef 60%,#a1c4fd);
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 14px; color: #fff;
+  }
+  .cover .tag {
+    align-self: flex-start; background: rgba(0,0,0,.35);
+    font-size: 11px; padding: 3px 8px; border-radius: 10px; margin-bottom: 8px;
+  }
+  .cover .big {
+    font-size: 22px; font-weight: 800; line-height: 1.3;
+    text-shadow: 0 1px 4px rgba(0,0,0,.25);
+  }
+  .card-body { padding: 10px 12px 12px; }
+  .card-title { font-size: 14px; font-weight: 600; line-height: 1.4; }
+  .card-meta { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 12px; color: #888; }
+  .avatar { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg,#f6d365,#fda085); }
+  .likes { margin-left: auto; }
+
+  /* ---------- 详情/支付页 ---------- */
+  .page { display: none; }
+  .page.active { display: block; }
+  .detail-hero {
+    height: 200px; background: linear-gradient(135deg,#667eea,#764ba2);
+    color: #fff; padding: 18px; display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .detail-hero h2 { font-size: 20px; font-weight: 800; line-height: 1.35; }
+  .detail-hero p { font-size: 12px; opacity: .9; margin-top: 8px; }
+  .detail-body { padding: 16px; }
+  .perk { display: flex; gap: 10px; margin-bottom: 14px; }
+  .perk .ic { font-size: 18px; }
+  .perk b { font-size: 14px; }
+  .perk span { font-size: 12px; color: #777; display: block; margin-top: 2px; }
+
+  .pay-box {
+    margin: 6px 16px 16px; border: 1px solid #ffe0b2;
+    background: #fff8f0; border-radius: 14px; padding: 16px; position: relative;
+  }
+  .price { font-size: 30px; font-weight: 800; color: #e6492d; }
+  .price small { font-size: 14px; font-weight: 600; }
+  .pay-sub { font-size: 12px; color: #c97b00; margin: 6px 0 14px; }
+
+  .code-row { display: flex; gap: 8px; align-items: stretch; position: relative; }
+  .code-row input {
+    flex: 1; border: 1px solid #ddd; border-radius: 8px;
+    padding: 0 12px; font-size: 15px; height: 44px; outline: none;
+  }
+  .countdown {
+    width: 92px; border: 1px solid #e6492d; color: #e6492d;
+    border-radius: 8px; font-size: 13px; display: flex;
+    align-items: center; justify-content: center; cursor: pointer; background: #fff;
+  }
+  .pay-btn {
+    margin-top: 14px; width: 100%; height: 46px; border: none;
+    border-radius: 23px; background: linear-gradient(90deg,#ff6a3d,#e6492d);
+    color: #fff; font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  .urgent { font-size: 11px; color: #e6492d; text-align: center; margin-top: 10px; }
+
+  /* ---------- 揭秘批注 ---------- */
+  .annot {
+    display: none; position: absolute;
+    background: #d32029; color: #fff; font-size: 11px; line-height: 1.45;
+    padding: 8px 10px; border-radius: 8px; width: 210px; z-index: 40;
+    box-shadow: 0 4px 14px rgba(0,0,0,.3);
+  }
+  .annot::before {
+    content: "⚠ 诈骗信号"; display: block; font-weight: 700; margin-bottom: 3px; font-size: 11px;
+  }
+  .reveal .annot { display: block; }
+  .reveal .danger-outline { outline: 3px dashed #d32029; outline-offset: 2px; border-radius: 8px; }
+
+  /* 弹窗 */
+  .modal {
+    display: none; position: absolute; inset: 0; z-index: 99;
+    background: rgba(0,0,0,.6); align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal.show { display: flex; }
+  .modal-card {
+    background: #fff; border-radius: 16px; padding: 22px 18px; text-align: center; width: 100%;
+  }
+  .modal-card .em { font-size: 40px; }
+  .modal-card h3 { font-size: 17px; color: #d32029; margin: 8px 0; }
+  .modal-card p { font-size: 13px; color: #555; line-height: 1.6; text-align: left; }
+  .modal-card ul { text-align: left; font-size: 12px; color: #555; margin: 10px 0; padding-left: 18px; line-height: 1.7; }
+  .modal-card button {
+    margin-top: 14px; background: #d32029; color: #fff; border: none;
+    padding: 10px 20px; border-radius: 22px; font-size: 14px; cursor: pointer;
+  }
+  .footnote { font-size: 11px; color: #999; text-align: center; padding: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="phone reveal" id="phone">
+
+  <div class="edu-bar">
+    反诈科普演示 · 此页为骗局复刻，非真实服务
+    <span class="reveal-toggle" id="toggle">关闭揭秘</span>
+  </div>
+
+  <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
+
+  <!-- 列表页 -->
+  <div class="page active" id="listPage">
+    <div class="topnav"><span class="title">发现</span></div>
+    <div class="feed">
+      <div class="card" onclick="go('detailPage')">
+        <div class="cover">
+          <span class="annot" style="top:14px;left:14px;">伪装成知名社交平台风格引流，正规机场/航司不会用"内部攻略"在社交平台拉人。</span>
+          <span class="tag danger-outline">✈️ 中转必看</span>
+          <div class="big">天河机场中转<br>隐藏福利攻略</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title danger-outline">免费住宿名额有限！老司机才知道的内部通道，照做立省一晚酒店💰
+            <span class="annot" style="left:12px;">"隐藏""内部""限量"是制造稀缺感和特权感的常见话术，目的是让你来不及核实。</span>
+          </div>
+          <div class="card-meta">
+            <span class="avatar"></span><span>差旅小达人</span>
+            <span class="likes">❤️ 9.8万</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footnote">👆 点击攻略，看看"福利"背后是什么</div>
+  </div>
+
+  <!-- 详情 + 支付页 -->
+  <div class="page" id="detailPage">
+    <div class="topnav"><span class="back" onclick="go('listPage')">‹</span><span class="title">中转福利攻略</span></div>
+    <div class="detail-hero">
+      <h2>免排队 + 免费住宿一键升级<br>市中心豪华酒店</h2>
+      <p>仅限今日中转旅客 · 名额即将抢光</p>
+    </div>
+    <div class="detail-body">
+      <div class="perk"><span class="ic">🛏️</span><div><b>免费住宿升级豪华酒店</b><span>小投入换大回报，是最常见的诱饵</span></div></div>
+      <div class="perk"><span class="ic">⚡</span><div><b>安检/值机免排队</b><span>用"特权"降低你的戒心</span></div></div>
+      <div class="perk"><span class="ic">💸</span><div><b>明早押金100%原路退还</b><span>"会退还"让你觉得没风险，实际钱进去就没了</span></div></div>
+    </div>
+
+    <div class="pay-box danger-outline">
+      <span class="annot" style="top:-6px;right:-4px;">收取小额"押金"+承诺豪华回报+"明早全退"，是经典的小钱钓大鱼套路。真服务不会让你私下转账。</span>
+      <div class="price"><small>支付押金</small> ¥99 <small>立即升级</small></div>
+      <div class="pay-sub">支付后立享豪华房型，明日 12:00 前自动全额退还</div>
+
+      <div class="code-row danger-outline" id="codeBlock">
+        <span class="annot" style="top:48px;left:0;">最危险的一步！倒计时制造紧迫感，逼你立刻交出短信验证码。验证码 = 你的账户钥匙，给了对方就能盗刷、转走你的钱。任何人索要验证码都是诈骗。</span>
+        <input type="text" inputmode="numeric" maxlength="6" placeholder="请输入短信验证码">
+        <div class="countdown" id="cd">获取验证码</div>
+      </div>
+
+      <button class="pay-btn" onclick="warn()">确认支付 ¥99</button>
+      <div class="urgent" id="urgent">⏰ 名额倒计时 09:58，逾期作废</div>
+    </div>
+
+    <div class="footnote">遇到这种页面，正确操作是：关掉它，一分钱不付，一个字不填。</div>
+  </div>
+
+  <!-- 反诈弹窗 -->
+  <div class="modal" id="modal">
+    <div class="modal-card">
+      <div class="em">🛑</div>
+      <h3>停！这是诈骗演示</h3>
+      <p>如果这是真页面，刚才的操作就会让你：</p>
+      <ul>
+        <li>损失 99 元"押金"，且永远退不回</li>
+        <li>交出短信验证码，账户和银行卡可能被盗刷</li>
+      </ul>
+      <p style="text-align:center;font-weight:600;color:#d32029;margin-top:6px;">
+        记住：正规机场、酒店绝不会私下收押金或索要验证码。<br>遇到请挂断、不转账、不输验证码，可拨 96110 反诈专线。
+      </p>
+      <button onclick="closeModal()">我记住了</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const phone = document.getElementById('phone');
+  const toggle = document.getElementById('toggle');
+
+  function go(id){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(id==='detailPage') startCountdown();
+  }
+
+  toggle.onclick = ()=>{
+    phone.classList.toggle('reveal');
+    toggle.textContent = phone.classList.contains('reveal') ? '关闭揭秘' : '🔍 揭秘模式';
+  };
+
+  // 验证码倒计时（纯展示，不收集任何输入）
+  const cd = document.getElementById('cd');
+  let timer=null;
+  cd.onclick = ()=>{
+    if(timer) return;
+    let s=60;
+    cd.textContent = s+'s 后重发';
+    timer=setInterval(()=>{
+      s--;
+      cd.textContent = s>0 ? s+'s 后重发' : '获取验证码';
+      if(s<=0){ clearInterval(timer); timer=null; }
+    },1000);
+  };
+
+  // 名额倒计时（纯展示）
+  let urgentTimer=null;
+  function startCountdown(){
+    if(urgentTimer) return;
+    let t=9*60+58;
+    const el=document.getElementById('urgent');
+    urgentTimer=setInterval(()=>{
+      t--; if(t<0)t=0;
+      const m=String(Math.floor(t/60)).padStart(2,'0');
+      const ss=String(t%60).padStart(2,'0');
+      el.textContent='⏰ 名额倒计时 '+m+':'+ss+'，逾期作废';
+    },1000);
+  }
+
+  function warn(){ document.getElementById('modal').classList.add('show'); }
+  function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+</script>
+</body>
+</html>
